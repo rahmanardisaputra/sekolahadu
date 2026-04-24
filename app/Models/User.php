@@ -22,6 +22,13 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    protected $fillable = ['name', 'email', 'password', 'role']; // Tambahkan 'role'
+
+    public function complaints() {
+        return $this->hasMany(Complaint::class);
+    }
+    
     protected function casts(): array
     {
         return [
