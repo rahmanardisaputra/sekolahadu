@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('title', 'Daftar Laporan')
+@push('styles')
+    <style>
+        .badge {
+            font-size: 0.9em;
+        }
+    </style>
+@endpush
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -8,13 +15,34 @@
         <a href="{{ route('complaints.create') }}" class="btn btn-primary">+ Buat Laporan</a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
+   
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ❌ {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
+    <form action="{{ route('complaints.index') }}" method="GET" class="mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" name="search" class="form-control" 
+                    placeholder="Cari judul laporan..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">Semua Status</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="proses" {{ request('status') == 'proses' ? 'selected' : '' }}>Proses</option>
+                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">🔍 Filter</button>
+            </div>
+        </div>
+    </form>
 
     <div class="card">
         <div class="card-body">
@@ -53,5 +81,19 @@
                 </tbody>
             </table>
         </div>
+        <div class="mt-3">
+            {{ $complaints->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: '{{ session('success') }}',
+            });
+        @endif
+    </script>
+@endpush
