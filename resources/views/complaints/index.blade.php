@@ -8,6 +8,14 @@
         <a href="{{ route('complaints.create') }}" class="btn btn-primary">+ Buat Laporan</a>
     </div>
 
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+
     <div class="card">
         <div class="card-body">
             <table class="table table-hover">
